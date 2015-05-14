@@ -29,6 +29,7 @@
                (reduce (fn [result# [name# cumulative-latency-ns#]]
                          (conj result# {:name name#
                                         :cumulative-latency-ns cumulative-latency-ns#
+                                        :cumulative-latency (i/human-latency cumulative-latency-ns#)
                                         :individual-latency (i/human-latency (if-let [inner-layer# (last result#)]
                                                                                (- cumulative-latency-ns#
                                                                                  (:cumulative-latency-ns inner-layer#))

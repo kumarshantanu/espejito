@@ -20,18 +20,16 @@
 (defmacro report
   "Use this at the outermost periphery of the code."
   [f & body]
-  `(if *metrics*
-     (throw (IllegalStateException. (str "*metrics* is already bound to " *metrics*)))
-     (binding [*metrics* (transient [])]
-      (try
-        ~@body
-        (finally
-          (~f (->> (persistent! *metrics*)
-                (reduce (fn [result# [name# cumulative-latency-ns#]]
-                          (conj result# {:name name#
-                                         :cumulative-latency-ns cumulative-latency-ns#
-                                         :individual-latency-ns (if-let [inner-layer# (last result#)]
-                                                                  (- cumulative-latency-ns#
-                                                                    (:cumulative-latency-ns inner-layer#))
-                                                                  cumulative-latency-ns#)}))
-                  []))))))))
+  `(binding [*metrics* (transient [])]
+     (try
+       ~@body
+       (finally
+         (~f (->> (persistent! *metrics*)
+               (reduce (fn [result# [name# cumulative-latency-ns#]]
+                         (conj result# {:name name#
+                                        :cumulative-latency-ns cumulative-latency-ns#
+                                        :individual-latency-ns (if-let [inner-layer# (last result#)]
+                                                                 (- cumulative-latency-ns#
+                                                                   (:cumulative-latency-ns inner-layer#))
+                                                                 cumulative-latency-ns#)}))
+                 [])))))))

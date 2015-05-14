@@ -14,7 +14,7 @@ A Clojure library to find inter-layer latency in single-threaded processing.
 Wrap your outer-most layer with the following call
 
 ```clojure
-(e/report clojure.pprint/print-table
+(e/report e/print-table
   ...) ; body of code
 ```
 

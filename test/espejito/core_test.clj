@@ -8,5 +8,8 @@
     (e/report pp/print-table
       (e/measure "outer"
         (Thread/sleep 1000)
-        (e/measure "inner"
-          (Thread/sleep 2000))))))
+        (try
+          (e/measure "inner"
+            (Thread/sleep 2000)
+            (throw (UnsupportedOperationException. "foo")))
+          (catch Exception _))))))

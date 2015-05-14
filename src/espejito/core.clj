@@ -11,9 +11,12 @@
   `(if *metrics*
      (let [start# (System/nanoTime)]
        (try
-         ~@body
-         (finally
-           (conj! *metrics* [~name (- (System/nanoTime) start#)]))))
+         (let [result# (do ~@body)]
+           (conj! *metrics* [~name (- (System/nanoTime) start#) nil])
+           result#)
+         (catch Throwable e#
+           (conj! *metrics* [~name (- (System/nanoTime) start#) (.getName ^Class (class e#))])
+           (throw e#))))
      (do
        ~@body)))
 
@@ -26,12 +29,13 @@
        ~@body
        (finally
          (~f (->> (persistent! *metrics*)
-               (reduce (fn [result# [name# cumulative-latency-ns#]]
+               (reduce (fn [result# [name# cumulative-latency-ns# error?#]]
                          (conj result# {:name name#
                                         :cumulative-latency-ns cumulative-latency-ns#
                                         :cumulative-latency (i/human-latency cumulative-latency-ns#)
                                         :individual-latency (i/human-latency (if-let [inner-layer# (last result#)]
                                                                                (- cumulative-latency-ns#
                                                                                  (:cumulative-latency-ns inner-layer#))
-                                                                               cumulative-latency-ns#))}))
+                                                                               cumulative-latency-ns#))
+                                        :error?             error?#}))
                  [])))))))

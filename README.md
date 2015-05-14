@@ -30,7 +30,8 @@ measurement point.
 
 ## Caveats
 
-This library assumes linear code path. If your code has branches, you have to put a `report` at every branch.
+This library assumes single-threaded code path only. For new/other threads you must use separate `report` for those
+threads.
 
 ## License
 

@@ -28,6 +28,10 @@ Wrap your outer-most layer with the following call
 The measure calls can be spread across several namespaces. Make sure that the layer-name is unique for every
 measurement point.
 
+## Caveats
+
+This library assumes linear code path. If your code has branches, you have to put a `report` at every branch.
+
 ## License
 
 Copyright © 2015 Shantanu Kumar (kumar.shantanu@gmail.com, shantanu.kumar@concur.com)

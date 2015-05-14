@@ -20,14 +20,11 @@
     :otherwise (str nanos "ns")))
 
 
-(def ^:cont max-name-width 60)
-
-
-(def ^String padding (apply str (repeat max-name-width \space)))
+(def ^String padding (apply str (repeat 100 \space)))
 
 
 (defn indent-name
-  [^long level name]
+  [^long max-name-width ^long level name]
   (-> (str (when (pos? level) (apply str (repeat (* 2 level) \space))) name padding)
     (subs 0 max-name-width)))
 
@@ -36,18 +33,17 @@
 
 
 (defn collect-child-report
-  [transient-collector ^long level [name ^long cumulative-latency-ns error? children-metrics]]
-  (let [indented-name (indent-name level name)]
-    (conj! transient-collector
-      {:name indented-name
-       :cumulative-latency-ns cumulative-latency-ns
-       :cumulative-latency (human-readable-latency cumulative-latency-ns)
-       :individual-latency (human-readable-latency (- ^long cumulative-latency-ns
-                                                     (let [^long children-latency-ns (->> children-metrics
-                                                                                       (map second)
-                                                                                       (reduce + 0))]
-                                                       children-latency-ns)))
-       :error?             error?}))
+  [transient-collector ^long level [name ^long cumulative-latency-ns thrown? children-metrics]]
+  (conj! transient-collector
+    {:name name
+     :level level
+     :cumulative-latency-ns cumulative-latency-ns
+     :individual-latency-ns (- ^long cumulative-latency-ns
+                              (let [^long children-latency-ns (->> children-metrics
+                                                                (map second)
+                                                                (reduce + 0))]
+                                children-latency-ns))
+     :thrown? thrown?})
   (collect-children-report transient-collector (inc level) children-metrics))
 
 

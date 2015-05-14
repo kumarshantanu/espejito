@@ -27,7 +27,18 @@
        ~@body)))
 
 
-(def print-table (partial pp/print-table [:name :cumulative-latency :individual-latency :error?]))
+(defn print-table
+  "Print the report using clojure.pprint/print-table"
+  ([rows]
+    (print-table 50 rows))
+  ([^long name-column-width rows]
+  (->> rows
+    (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
+            (assoc m
+              :name (i/indent-name name-column-width level name)
+              :cumulative-latency (i/human-readable-latency cumulative-latency-ns)
+              :individual-latency (i/human-readable-latency individual-latency-ns))))
+    (pp/print-table [:name :cumulative-latency :individual-latency :thrown?]))))
 
 
 (defmacro report

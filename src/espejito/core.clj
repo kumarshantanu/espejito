@@ -1,4 +1,5 @@
-(ns espejito.core)
+(ns espejito.core
+  (:require [espejito.internal :as i]))
 
 
 (def ^:dynamic *metrics* nil)
@@ -28,8 +29,8 @@
                (reduce (fn [result# [name# cumulative-latency-ns#]]
                          (conj result# {:name name#
                                         :cumulative-latency-ns cumulative-latency-ns#
-                                        :individual-latency-ns (if-let [inner-layer# (last result#)]
-                                                                 (- cumulative-latency-ns#
-                                                                   (:cumulative-latency-ns inner-layer#))
-                                                                 cumulative-latency-ns#)}))
+                                        :individual-latency (i/human-latency (if-let [inner-layer# (last result#)]
+                                                                               (- cumulative-latency-ns#
+                                                                                 (:cumulative-latency-ns inner-layer#))
+                                                                               cumulative-latency-ns#))}))
                  [])))))))

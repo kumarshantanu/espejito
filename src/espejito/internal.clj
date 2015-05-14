@@ -1,22 +1,22 @@
 (ns espejito.internal)
 
 
-(def ^:constant nanos-to-seconds 1000000000)
+(def ^:const nanos-to-seconds 1000000000)
 
 
-(def ^:constant nanos-to-millis 1000000)
+(def ^:const nanos-to-millis 1000000)
 
 
-(def ^:constant nanos-to-micros 1000)
+(def ^:const nanos-to-micros 1000)
 
 
 (defn human-readable-latency
   "Convert nano-second latency to human-readable form"
   [^long nanos]
   (cond
-    (> nanos ^long nanos-to-seconds) (str (double (/ nanos ^long nanos-to-seconds)) "s")
-    (> nanos ^long nanos-to-millis)  (str (double (/ nanos ^long nanos-to-millis)) "ms")
-    (> nanos ^long nanos-to-micros)  (str (double (/ nanos ^long nanos-to-micros)) "us")
+    (> nanos nanos-to-seconds) (str (double (/ nanos nanos-to-seconds)) "s")
+    (> nanos nanos-to-millis)  (str (double (/ nanos nanos-to-millis)) "ms")
+    (> nanos nanos-to-micros)  (str (double (/ nanos nanos-to-micros)) "us")
     :otherwise (str nanos "ns")))
 
 

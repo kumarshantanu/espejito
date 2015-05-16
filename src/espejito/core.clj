@@ -29,10 +29,10 @@
 
 (defn print-table
   "Print the report using clojure.pprint/print-table"
-  ([rows]
-    (print-table 50 rows))
-  ([^long name-column-width rows]
-  (->> rows
+  ([nested-metrics]
+    (print-table 50 nested-metrics))
+  ([^long name-column-width nested-metrics]
+  (->> (i/flatten-children-report nested-metrics)
     (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
             (assoc m
               :name (i/indent-name name-column-width level name)
@@ -48,6 +48,4 @@
      (try
        ~@body
        (finally
-         (~f (let [result# (transient [])]
-               (i/collect-children-report result# 0 (persistent! *metrics*))
-               (persistent! result#)))))))
+         (~f (persistent! *metrics*))))))

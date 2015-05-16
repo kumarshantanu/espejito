@@ -1,7 +1,9 @@
 (ns espejito.core-test
-  (:require [clojure.test :refer :all]
-            [espejito.core :as e]
-            [clojure.pprint :as pp]))
+  (:require
+    [clojure.pprint :as pp]
+    [clojure.test :refer :all]
+    [espejito.core     :as e]
+    [espejito.internal :as i]))
 
 
 (defn processing
@@ -20,8 +22,12 @@
 
 
 (deftest the-test
-  (testing "Using vanilla print-table"
-    (e/report pp/print-table
+  (testing "Using clojure.pprint/pprint (to show nested data)"
+    (e/report pp/pprint
+      (processing)))
+  (testing "Using vanilla print-table (to show intermediate flattened data)"
+    (e/report #(-> (i/flatten-children-report %)
+                 pp/print-table)
       (processing)))
   (testing "Using espejito print-table"
     (e/report e/print-table

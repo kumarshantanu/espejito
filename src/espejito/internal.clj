@@ -50,3 +50,10 @@
 (defn collect-children-report [transient-collector ^long level children-metrics]
   (doseq [each children-metrics]
     (collect-child-report transient-collector level each)))
+
+
+(defn flatten-children-report
+  [nested-metrics]
+  (let [result (transient [])]
+    (collect-children-report result 0 nested-metrics)
+    (persistent! result)))

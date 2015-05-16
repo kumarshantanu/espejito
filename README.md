@@ -5,12 +5,12 @@ A Clojure library to find latency across measurement points in single-threaded p
 Sample output:
 
 ```
-|                                              :name | :cumulative-latency | :individual-latency |                                :thrown? |
-|----------------------------------------------------+---------------------+---------------------+-----------------------------------------|
-| outer                                              |             358.7ms |           102.222ms |                                         |
-|   inner                                            |           202.397ms |           150.353ms | java.lang.UnsupportedOperationException |
-|     inner-most                                     |            52.044ms |            52.044ms |                                         |
-|   inner-sibling                                    |            54.081ms |            54.081ms |                                         |
+|                :name | :cumulative-latency | :individual-latency |                                :thrown? |
+|----------------------+---------------------+---------------------+-----------------------------------------|
+| outer                |             358.7ms |           102.222ms |                                         |
+|   inner              |           202.397ms |           150.353ms | java.lang.UnsupportedOperationException |
+|     inner-most       |            52.044ms |            52.044ms |                                         |
+|   inner-sibling      |            54.081ms |            54.081ms |                                         |
 ```
 
 ## Usage

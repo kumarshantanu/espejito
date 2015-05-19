@@ -1,6 +1,11 @@
 (ns espejito.internal)
 
 
+(defn percent
+  ^double [^long numerator ^long denominator]
+  (double (/ (* 100 numerator) denominator)))
+
+
 (def ^:const nanos-to-seconds 1000000000)
 
 

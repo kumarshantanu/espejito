@@ -32,13 +32,18 @@
   ([nested-metrics]
     (print-table 50 nested-metrics))
   ([^long name-column-width nested-metrics]
-  (->> (i/flatten-children-report nested-metrics)
-    (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
-            (assoc m
-              :name (i/indent-name name-column-width level name)
-              :cumulative-latency (i/human-readable-latency cumulative-latency-ns)
-              :individual-latency (i/human-readable-latency individual-latency-ns))))
-    (pp/print-table [:name :cumulative-latency :individual-latency :thrown?]))))
+  (if-let [flat-metrics (seq (i/flatten-children-report nested-metrics))]
+    (let [total-ns (:cumulative-latency-ns (first flat-metrics))]
+      (->> flat-metrics
+        (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
+                (assoc m
+                  :name (i/indent-name name-column-width level name)
+                  :cumulative (i/human-readable-latency cumulative-latency-ns)
+                  :cu-percent (format "%.2f%%" (i/percent cumulative-latency-ns total-ns))
+                  :individual (i/human-readable-latency individual-latency-ns)
+                  :in-percent (format "%.2f%%" (i/percent individual-latency-ns total-ns)))))
+        (pp/print-table [:name :cumulative :cu-percent :individual :in-percent :thrown?])))
+    (println "\nNo data to report!"))))
 
 
 (defmacro report

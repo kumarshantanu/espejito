@@ -39,10 +39,10 @@
                 (assoc m
                   :name (i/indent-name name-column-width level name)
                   :cumulative (i/human-readable-latency cumulative-latency-ns)
-                  :cu-percent (format "%.2f%%" (i/percent cumulative-latency-ns total-ns))
+                  :cumul-% (format "%.2f %%" (i/percent cumulative-latency-ns total-ns))
                   :individual (i/human-readable-latency individual-latency-ns)
-                  :in-percent (format "%.2f%%" (i/percent individual-latency-ns total-ns)))))
-        (pp/print-table [:name :cumulative :cu-percent :individual :in-percent :thrown?])))
+                  :indiv-% (format "%.2f %%" (i/percent individual-latency-ns total-ns)))))
+        (pp/print-table [:name :cumulative :cumul-% :individual :indiv-% :thrown?])))
     (println "\nNo data to report!"))))
 
 

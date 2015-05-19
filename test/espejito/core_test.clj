@@ -31,4 +31,6 @@
       (processing)))
   (testing "Using espejito print-table"
     (e/report e/print-table
-      (processing))))
+      (processing)))
+  (testing "Empty block using espejito print-table"
+    (e/report e/print-table)))

@@ -14,9 +14,9 @@
   "Convert nano-second latency to human-readable form"
   [^long nanos]
   (cond
-    (> nanos nanos-to-seconds) (str (double (/ nanos nanos-to-seconds)) "s")
-    (> nanos nanos-to-millis)  (str (double (/ nanos nanos-to-millis)) "ms")
-    (> nanos nanos-to-micros)  (str (double (/ nanos nanos-to-micros)) "us")
+    (> nanos nanos-to-seconds) (str (double (/ nanos nanos-to-seconds)) " s")
+    (> nanos nanos-to-millis)  (str (double (/ nanos nanos-to-millis)) " ms")
+    (> nanos nanos-to-micros)  (str (double (/ nanos nanos-to-micros)) " µs")
     :otherwise (str nanos "ns")))
 
 

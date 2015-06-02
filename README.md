@@ -1,6 +1,6 @@
 # espejito
 
-A Clojure library to find latency across measurement points in single-threaded processing.
+A Clojure library to find latency across measurement points in single-threaded call trees.
 
 Sample output:
 
@@ -14,6 +14,8 @@ Sample output:
 ```
 
 ## Usage
+
+Leiningen coordinates: `[espejito "0.1.0"]`
 
 ### Requiring namespace
 ```clojure

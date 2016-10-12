@@ -37,22 +37,24 @@
 
 
 (defn print-table
-  "Print the report using clojure.pprint/print-table"
+  "Print the report in a tabular format."
   ([nested-metrics]
     (print-table 50 nested-metrics))
   ([^long name-column-width nested-metrics]
-  (if-let [flat-metrics (seq (i/flatten-children-report nested-metrics))]
-    (let [total-ns (:cumulative-latency-ns (first flat-metrics))]
-      (->> flat-metrics
-        (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
-                (assoc m
-                  :name (i/indent-name name-column-width level name)
-                  :cumulative (i/human-readable-latency cumulative-latency-ns)
-                  :cumul-% (format "%.2f %%" (i/percent cumulative-latency-ns total-ns))
-                  :individual (i/human-readable-latency individual-latency-ns)
-                  :indiv-% (format "%.2f %%" (i/percent individual-latency-ns total-ns)))))
-        (pp/print-table [:name :cumulative :cumul-% :individual :indiv-% :thrown?])))
-    (println "\nNo data to report!"))))
+    (print-table pp/print-table name-column-width nested-metrics))
+  ([table-printer ^long name-column-width nested-metrics]
+    (if-let [flat-metrics (seq (i/flatten-children-report nested-metrics))]
+      (let [total-ns (:cumulative-latency-ns (first flat-metrics))]
+        (->> flat-metrics
+          (mapv (fn [{:keys [name level cumulative-latency-ns individual-latency-ns] :as m}]
+                  (assoc m
+                    :name (i/indent-name name-column-width level name)
+                    :cumulative (i/human-readable-latency cumulative-latency-ns)
+                    :cumul-% (format "%.2f %%" (i/percent cumulative-latency-ns total-ns))
+                    :individual (i/human-readable-latency individual-latency-ns)
+                    :indiv-% (format "%.2f %%" (i/percent individual-latency-ns total-ns)))))
+          (table-printer [:name :cumulative :cumul-% :individual :indiv-% :thrown?])))
+      (println "\nNo data to report!"))))
 
 
 (defmacro report

@@ -8,7 +8,7 @@
 
 ## 0.1.1 / 2016-October-??
 
-- [TODO] Support for pluggable table printer in `espejito.core/print-table`
+- Support for pluggable table printer in `espejito.core/print-table`
 
 
 ## 0.1.0 / 2015-June-02

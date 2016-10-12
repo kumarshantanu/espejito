@@ -6,6 +6,7 @@
   :global-vars {*warn-on-reflection* true
                 *assert* true}
   :profiles {:provided {:dependencies [[org.clojure/clojure "1.5.1"]]}
+             :dev {:dependencies [[stringer "0.3.0"]]}
              :c15 {:dependencies [[org.clojure/clojure "1.5.1"]]}
              :c16 {:dependencies [[org.clojure/clojure "1.6.0"]]}
              :c17 {:dependencies [[org.clojure/clojure "1.7.0"]]

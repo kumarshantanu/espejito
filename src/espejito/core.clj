@@ -37,7 +37,7 @@
 
 
 (defn print-table
-  "Print the report in a tabular format."
+  "Print the report in a tabular format. Argument table-printer is an arity-2 fn that accepts header and rows."
   ([nested-metrics]
     (print-table 50 nested-metrics))
   ([^long name-column-width nested-metrics]

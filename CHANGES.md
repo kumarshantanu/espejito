@@ -6,7 +6,7 @@
 - [TODO] Support for carrying context into child threads
 
 
-## 0.1.1 / 2016-October-??
+## 0.1.1 / 2016-October-13
 
 - Support for pluggable table printer in `espejito.core/print-table`
 

@@ -4,14 +4,11 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :global-vars {*warn-on-reflection* true
-                *assert* true}
+                *assert* true
+                *unchecked-math* :warn-on-boxed}
   :profiles {:provided {:dependencies [[org.clojure/clojure "1.7.0"]]}
              :dev {:dependencies [[stringer "0.3.0"]]}
-             :c07 {:dependencies [[org.clojure/clojure "1.7.0"]]
-                   :global-vars {*unchecked-math* :warn-on-boxed}}
-             :c08 {:dependencies [[org.clojure/clojure "1.8.0"]]
-                   :global-vars {*unchecked-math* :warn-on-boxed}}
-             :c09 {:dependencies [[org.clojure/clojure "1.9.0"]]
-                   :global-vars {*unchecked-math* :warn-on-boxed}}
-             :c10 {:dependencies [[org.clojure/clojure "1.10.1"]]
-                   :global-vars {*unchecked-math* :warn-on-boxed}}})
+             :c07 {:dependencies [[org.clojure/clojure "1.7.0"]]}
+             :c08 {:dependencies [[org.clojure/clojure "1.8.0"]]}
+             :c09 {:dependencies [[org.clojure/clojure "1.9.0"]]}
+             :c10 {:dependencies [[org.clojure/clojure "1.10.1"]]}})

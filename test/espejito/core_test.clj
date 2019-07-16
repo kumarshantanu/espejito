@@ -11,7 +11,6 @@
   (:require
     [clojure.pprint :as pp]
     [clojure.test :refer :all]
-    [stringer.core     :as stringer]
     [espejito.core     :as e]
     [espejito.internal :as i]))
 
@@ -42,7 +41,7 @@
   (testing "Using espejito print-table"
     (e/report e/print-table
       (processing))
-    (e/report (partial e/print-table #(println (stringer/strtbl %1 %2)) 50)
+    (e/report (partial e/print-table pp/print-table 50)
       (processing)))
   (testing "Empty block using espejito print-table"
     (e/report e/print-table)))

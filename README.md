@@ -15,7 +15,7 @@ Sample output:
 
 ## Usage
 
-Leiningen coordinates: `[espejito "0.1.1"]`
+Leiningen coordinates: `[espejito "0.2.0-alpha1"]`
 
 ### Requiring namespace
 ```clojure

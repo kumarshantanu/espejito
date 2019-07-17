@@ -24,6 +24,15 @@
 (def ^:const nanos-to-micros 1000)
 
 
+(defn nanos
+  "Return duration in nanoseconds since Epoch, or since the supplied timestamp (in nanos)."
+  (^long []
+   #?(:cljs (unchecked-multiply (.getTime (js/Date.)) nanos-to-millis)
+      :clj (System/nanoTime)))
+  (^long [^long start]
+   (unchecked-subtract (nanos) start)))
+
+
 (defn human-readable-latency
   "Convert nano-second latency to human-readable form"
   [^long nanos]
@@ -52,11 +61,11 @@
     {:name name
      :level level
      :cumulative-latency-ns cumulative-latency-ns
-     :individual-latency-ns (- ^long cumulative-latency-ns
-                              (let [^long children-latency-ns (->> children-metrics
-                                                                (map second)
-                                                                (reduce + 0))]
-                                children-latency-ns))
+     :individual-latency-ns (unchecked-subtract ^long cumulative-latency-ns
+                                                (let [^long children-latency-ns (->> children-metrics
+                                                                                     (map second)
+                                                                                     (reduce + 0))]
+                                                  children-latency-ns))
      :thrown? thrown?})
   (collect-children-report transient-collector (inc level) children-metrics))
 

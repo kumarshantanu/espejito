@@ -9,7 +9,7 @@
 ## [Todo] 0.2.0 / 2019-July-??
 
 - Drop support for Clojure 1.5 and 1.6
-- [Todo] Add ClojureScript support
+- Add ClojureScript support
 - [Todo] Add `espejito.jvm` namespace for JVM support
   - `instrument-measure`
   - `instrument-report`

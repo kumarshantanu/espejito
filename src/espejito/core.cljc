@@ -8,9 +8,14 @@
 
 
 (ns espejito.core
+  #?(:cljs (:require-macros espejito.core))
   (:require
-    [clojure.pprint :as pp]
-    [espejito.internal :as i]))
+   #?(:cljs [goog.string :as gstring])
+   #?(:cljs [goog.string.format])
+   #?(:cljs [cljs.pprint    :include-macros true :as pp]
+      :clj  [clojure.pprint :as pp])
+   [espejito.internal :as i]))
+
 
 
 (def ^:dynamic *metrics* nil)
@@ -19,21 +24,22 @@
 (defmacro measure
   "Use this at layer boundaries in code. Not recommended for tight loops - may cause out-of-memory situation!"
   [name & body]
-  `(if *metrics*
-     (let [start# (System/nanoTime)
-           children-metrics# (transient [])]
-       (try
-         (let [result# (binding [*metrics* children-metrics#]
-                         ~@body)]
-           (conj! *metrics* [~name (- (System/nanoTime) start#) nil
-                             (persistent! children-metrics#)])
-           result#)
-         (catch Throwable e#
-           (conj! *metrics* [~name (- (System/nanoTime) start#) (.getName ^Class (class e#))
-                             (persistent! children-metrics#)])
-           (throw e#))))
-     (do
-       ~@body)))
+  (let [esym (gensym "ex")]
+    `(if (some? *metrics*)
+       (let [start# (i/nanos)
+             children-metrics# (transient [])]
+         (try
+           (let [result# (binding [*metrics* children-metrics#]
+                           ~@body)]
+             (conj! *metrics* [~name (i/nanos start#) nil
+                               (persistent! children-metrics#)])
+             result#)
+           (catch ~(if (:ns &env) `js/Error `Throwable) ~esym
+             (conj! *metrics* [~name (i/nanos start#) ~(if (:ns &env) `"js/Error" `(.getName ^Class (class ~esym)))
+                               (persistent! children-metrics#)])
+             (throw ~esym))))
+       (do
+         ~@body))))
 
 
 (defn print-table
@@ -50,9 +56,9 @@
                   (assoc m
                     :name (i/indent-name name-column-width level name)
                     :cumulative (i/human-readable-latency cumulative-latency-ns)
-                    :cumul-% (format "%.2f %%" (i/percent cumulative-latency-ns total-ns))
+                    :cumul-% (#?(:cljs gstring/format :clj format) "%.2f %%" (i/percent cumulative-latency-ns total-ns))
                     :individual (i/human-readable-latency individual-latency-ns)
-                    :indiv-% (format "%.2f %%" (i/percent individual-latency-ns total-ns)))))
+                    :indiv-% (#?(:cljs gstring/format :clj format) "%.2f %%" (i/percent individual-latency-ns total-ns)))))
           (table-printer [:name :cumulative :cumul-% :individual :indiv-% :thrown?])))
       (println "\nNo data to report!"))))
 

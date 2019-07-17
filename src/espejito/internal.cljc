@@ -64,7 +64,7 @@
      :individual-latency-ns (unchecked-subtract ^long cumulative-latency-ns
                                                 (let [^long children-latency-ns (->> children-metrics
                                                                                      (map second)
-                                                                                     (reduce + 0))]
+                                                                                     (reduce unchecked-add 0))]
                                                   children-latency-ns))
      :thrown? thrown?})
   (collect-children-report transient-collector (inc level) children-metrics))

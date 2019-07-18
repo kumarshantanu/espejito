@@ -6,10 +6,14 @@
 - [TODO] Support for carrying context into child threads
 
 
-## 0.2.0-alpha1 / 2019-July-17
+## [WIP] 0.2.0-alpha2 / 2019-July-??
 
 - Drop support for Clojure 1.5 and 1.6
 - Add ClojureScript support
+- [Todo] Add `espejito.instrument` namespace (instrumentation on JVM)
+  - `shorten-ns`  (utility)
+  - `resolve-var` (utility)
+  - `instrument-measure` (instrument)
 - [Fixme] Do not hardcode JS exception class to `js/Error`
 
 

@@ -1,6 +1,6 @@
 # espejito
 
-A Clojure library to find latency across measurement points in single-threaded call trees.
+A Clojure/ClojureScript library to find latency across measurement points in single-threaded call trees.
 
 Sample output:
 
@@ -40,6 +40,31 @@ Wrap your outer-most layer with the following call
 
 The measure calls can be spread across several namespaces. Make sure that the layer-name is unique for every
 measurement point.
+
+### Instrumentation support on the JVM
+
+The following convenience API is available on the JVM:
+
+```clojure
+(require '[espejito.instrument :as ins])
+
+;; to instrument functions for latency measurement
+(doseq ["com.myapp/foo"
+        "com.myapp/bar"
+        "com.myapp/baz"]
+  (ins/instrument-measure each))
+```
+
+Then the report generated using `(e/report e/print-table ...)` looks
+something like the following:
+
+```
+|             :name |   :cumulative | :cumul-% |   :individual | :indiv-% | :thrown? |
+|----------------------------------------------------+---------------+----------+---------------+----------+----------|
+| com.myapp/foo     | 606.254183 ms | 100.00 % | 301.916861 ms |  49.80 % |          |
+|   com.myapp/bar   | 304.337322 ms |  50.20 % | 203.490408 ms |  33.57 % |          |
+|     com.myapp/baz | 100.846914 ms |  16.63 % | 100.846914 ms |  16.63 % |          |
+```
 
 ## Caveats
 

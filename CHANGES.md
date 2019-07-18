@@ -6,7 +6,7 @@
 - [TODO] Support for carrying context into child threads
 
 
-## [WIP] 0.2.0-alpha2 / 2019-July-??
+## 0.2.0-alpha2 / 2019-July-18
 
 - Drop support for Clojure 1.5 and 1.6
 - Add ClojureScript support

@@ -10,6 +10,18 @@
 (ns espejito.internal)
 
 
+(defn expected
+  "Throw illegal input exception citing `expectation` and what was `found` did not match. Optionally accept a predicate
+  fn to test `found` before throwing the exception."
+  ([expectation found]
+   (throw (ex-info
+           (str "Expected " expectation ", but found (" (pr-str (type found)) ") " (pr-str found))
+           {:found found})))
+  ([pred expectation found]
+   (when-not (pred found)
+     (expected expectation found))))
+
+
 (defn percent
   ^double [^long numerator ^long denominator]
   (double (/ (* 100 numerator) denominator)))

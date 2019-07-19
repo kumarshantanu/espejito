@@ -1,4 +1,4 @@
-(defproject espejito "0.2.0-alpha2"
+(defproject espejito "0.2.0-beta1"
   :description "Inter-layer latency finder for single-threaded processing"
   :url "https://github.com/kumarshantanu/espejito"
   :license {:name "Eclipse Public License"

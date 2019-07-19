@@ -42,6 +42,14 @@
          ~@body))))
 
 
+(defn wrap-measure
+  "Wrap given function such that it measures latency when invoked."
+  [f measure-name]
+  (fn espejito-measured [& args]
+    (measure measure-name
+             (apply f args))))
+
+
 (defn print-table
   "Print the report in a tabular format. Argument table-printer is an arity-2 fn that accepts header and rows."
   ([nested-metrics]

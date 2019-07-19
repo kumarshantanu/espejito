@@ -96,6 +96,4 @@
                              (i/expected "a var or a fully-qualified var name"
                                          var-or-varname))]
      (alter-var-root the-var (fn [f]
-                               (fn espejito-instrumented [& args]
-                                 (e/measure (name-encoder fq-name)
-                                            (apply f args))))))))
+                               (e/wrap-measure f (name-encoder fq-name)))))))

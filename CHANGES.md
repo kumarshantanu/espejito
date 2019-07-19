@@ -10,6 +10,7 @@
 
 - Drop support for Clojure 1.5 and 1.6
 - Add ClojureScript support
+- Add `espejito.core/wrap-measure` to wrap functions for measurement
 - Add `espejito.instrument` namespace (instrumentation on JVM)
   - `shorten-ns`  (utility)
   - `resolve-var` (utility)

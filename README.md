@@ -38,6 +38,13 @@ Wrap your outer-most layer with the following call
   ...) ; body of code to measure
 ```
 
+Or
+
+```clojure
+;; f is the function to wrap with measurement
+(e/wrap-measure f "function-name")
+```
+
 The measure calls can be spread across several namespaces. Make sure that the layer-name is unique for every
 measurement point.
 

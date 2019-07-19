@@ -15,7 +15,6 @@
   - `shorten-ns`  (utility)
   - `resolve-var` (utility)
   - `instrument-measure` (instrument)
-- [Fixme] Do not hardcode JS exception class to `js/Error`
 
 
 ## 0.1.1 / 2016-October-13

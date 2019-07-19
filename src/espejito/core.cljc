@@ -35,7 +35,11 @@
                                (persistent! children-metrics#)])
              result#)
            (catch ~(if (:ns &env) `js/Error `Throwable) ~esym
-             (conj! *metrics* [~name (i/nanos start#) ~(if (:ns &env) `"js/Error" `(.getName ^Class (class ~esym)))
+             (conj! *metrics* [~name (i/nanos start#) ~(if (:ns &env)
+                                                         `(if-let [ctor# (.-constructor ~esym)]
+                                                            (.-name ctor#)
+                                                            "unknown")
+                                                         `(.getName ^Class (class ~esym)))
                                (persistent! children-metrics#)])
              (throw ~esym))))
        (do

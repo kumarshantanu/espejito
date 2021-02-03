@@ -24,10 +24,10 @@
              :c07 {:dependencies [[org.clojure/clojure "1.7.0"]]}
              :c08 {:dependencies [[org.clojure/clojure "1.8.0"]]}
              :c09 {:dependencies [[org.clojure/clojure "1.9.0"]]}
-             :c10 {:dependencies [[org.clojure/clojure "1.10.1"]]}
-             :s09 {:dependencies [[org.clojure/clojure "1.10.1"]
+             :c10 {:dependencies [[org.clojure/clojure "1.10.2"]]}
+             :s09 {:dependencies [[org.clojure/clojure "1.10.2"]
                                   [org.clojure/clojurescript "1.9.946"]]}
-             :s10 {:dependencies [[org.clojure/clojure "1.10.1"]
+             :s10 {:dependencies [[org.clojure/clojure "1.10.2"]
                                   [org.clojure/clojurescript "1.10.339"]]}
              :dln {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
 :aliases {"clj-test"  ["with-profile" "c07:c08:c09:c10" "test"]

@@ -9,26 +9,40 @@
 
 (ns espejito.core-test
   (:require
-    [clojure.pprint :as pp]
-    [clojure.test :refer :all]
-    [stringer.core     :as stringer]
-    [espejito.core     :as e]
-    [espejito.internal :as i]))
+   #?(:cljs [cljs.test    :refer-macros [deftest is testing]]
+      :clj  [clojure.test :refer        [deftest is testing]])
+   #?(:cljs [cljs.pprint    :include-macros true :as pp]
+      :clj  [clojure.pprint :as pp])
+   #?(:cljs [espejito.core :include-macros true :as e]
+      :clj  [espejito.core :as e])
+   [espejito.internal :as i]))
+
+
+(defn sleep
+  [millis]
+  #?(:cljs (let [deadline (+ millis (.getTime (js/Date.)))]
+             (while (> deadline (.getTime (js/Date.)))))
+     :clj  (Thread/sleep millis)))
+
+
+(defn throwable
+  [^String msg]
+  #?(:clj (Exception. msg) :cljs (js/Error. msg)))
 
 
 (defn processing
   []
   (e/measure "outer"
-    (Thread/sleep 100)
+    (sleep 100)
     (try
       (e/measure "inner"
-        (Thread/sleep 150)
+        (sleep 150)
         (e/measure "inner-most"
-          (Thread/sleep 50))
-        (throw (UnsupportedOperationException. "foo")))
-      (catch Exception _))
+          (sleep 50))
+        (throw (throwable "foo")))
+      (catch #?(:cljs js/Error :clj Exception) _))
     (e/measure "inner-sibling"
-      (Thread/sleep 50))))
+      (sleep 50))))
 
 
 (deftest the-test
@@ -42,7 +56,7 @@
   (testing "Using espejito print-table"
     (e/report e/print-table
       (processing))
-    (e/report (partial e/print-table #(println (stringer/strtbl %1 %2)) 50)
+    (e/report (partial e/print-table pp/print-table 50)
       (processing)))
   (testing "Empty block using espejito print-table"
     (e/report e/print-table)))

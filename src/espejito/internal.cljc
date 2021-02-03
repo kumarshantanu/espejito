@@ -10,6 +10,18 @@
 (ns espejito.internal)
 
 
+(defn expected
+  "Throw illegal input exception citing `expectation` and what was `found` did not match. Optionally accept a predicate
+  fn to test `found` before throwing the exception."
+  ([expectation found]
+   (throw (ex-info
+           (str "Expected " expectation ", but found (" (pr-str (type found)) ") " (pr-str found))
+           {:found found})))
+  ([pred expectation found]
+   (when-not (pred found)
+     (expected expectation found))))
+
+
 (defn percent
   ^double [^long numerator ^long denominator]
   (double (/ (* 100 numerator) denominator)))
@@ -22,6 +34,15 @@
 
 
 (def ^:const nanos-to-micros 1000)
+
+
+(defn nanos
+  "Return duration in nanoseconds since Epoch, or since the supplied timestamp (in nanos)."
+  (^long []
+   #?(:cljs (unchecked-multiply (.getTime (js/Date.)) nanos-to-millis)
+      :clj (System/nanoTime)))
+  (^long [^long start]
+   (unchecked-subtract (nanos) start)))
 
 
 (defn human-readable-latency
@@ -52,11 +73,11 @@
     {:name name
      :level level
      :cumulative-latency-ns cumulative-latency-ns
-     :individual-latency-ns (- ^long cumulative-latency-ns
-                              (let [^long children-latency-ns (->> children-metrics
-                                                                (map second)
-                                                                (reduce + 0))]
-                                children-latency-ns))
+     :individual-latency-ns (unchecked-subtract ^long cumulative-latency-ns
+                                                (let [^long children-latency-ns (->> children-metrics
+                                                                                     (map second)
+                                                                                     (reduce unchecked-add 0))]
+                                                  children-latency-ns))
      :thrown? thrown?})
   (collect-children-report transient-collector (inc level) children-metrics))
 

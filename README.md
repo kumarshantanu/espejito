@@ -1,5 +1,7 @@
 # espejito
 
+[![cljdoc badge](https://cljdoc.org/badge/espejito/espejito)](https://cljdoc.org/d/espejito/espejito)
+
 A Clojure/ClojureScript library to find latency across measurement points in single-threaded call trees.
 
 Sample output:
